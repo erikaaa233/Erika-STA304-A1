@@ -1,13 +1,94 @@
 ---
-title: page2
-author: ~
-date: '2020-09-24'
+title: "Apendix:code "
+author: Jiayi YANG
+date: '2020-09-27'
 slug: page2
 categories: []
 tags: []
 ---
 
 
+```{r}
+library(opendatatoronto)
+library(tidyverse)
+library(dplyr)
 
-#Abstract2
-aaa
+# get package
+package <- show_package("64b54586-6180-4485-83eb-81e8fae3b8fe")
+package
+
+# get all resources for this package
+resources <- list_package_resources("64b54586-6180-4485-83eb-81e8fae3b8fe")
+
+# identify datastore resources; by default, Toronto Open Data sets datastore resource format to CSV for non-geospatial and GeoJSON for geospatial resources
+datastore_resources <- filter(resources, tolower(format) %in% c('csv', 'geojson'))
+
+# load the first datastore resource as a sample
+data <- filter(datastore_resources, row_number()==1) %>% get_resource()
+data
+
+#check missing values#
+colSums(is.na(data))
+#Remove some variables#
+data1 <- data %>% select(3:12,16:18)
+
+#check data types
+str(data1)
+
+#divide three types of outcomes into two#
+#create new variables#
+data2 = data1
+data2$Outcome = as.factor(ifelse(data2$Outcome == "RESOLVED", "Resolved", "No"))
+
+#Data processing
+#1)Age
+#Remove the observation with invalid data
+data2 <- data2 %>% filter(`Age Group` != "NaN") %>% 
+  filter(`Source of Infection` !="Unknown/Missing") %>%
+  filter(`Client Gender` != "UNKNOWN")
+#Test whether there are differences in the probability of resolved at different ages#
+data3 <- data2%>% group_by(`Age Group`) %>% 
+  mutate(`probability for not cured in different age` = mean(Outcome == "No"))
+#graph
+ggplot(data3, aes(x = `Age Group`, y = `probability for not cured in different age`)) + 
+  geom_point() + labs(title = "Pic.1: Probability of not cured at different ages") + 
+  theme(axis.text.x = element_text(angle = 50, hjust = 1))
+
+#2)Gender
+#Test whether there are differences in the probability of resolved at different gender#
+ggplot(data = data3, aes(x=`Client Gender`)) + geom_bar() +
+  labs(title = "the distribution of patients at different gender") + 
+  theme(axis.text.x = element_text(size=10, angle = 50, hjust = 1))
+data3 %>% group_by(`Client Gender`) %>% summarise(`Probability of not cured at different gender` = mean(Outcome == "No"))
+
+#3) Neighbourhood & type of infection source
+table(data3$`Neighbourhood Name`)
+data3 %>% group_by(`Neighbourhood Name`) %>% 
+  summarise(prob = mean(`Outbreak Associated` == "Outbreak Associated"))
+
+#4)Source of Infection
+ggplot(data = data3, aes(x=`Source of Infection`)) + geom_bar() +
+  labs(title = "Pic.2: The distribution of patients from difference source of infection") + 
+  theme(axis.text.x = element_text(size=10, angle = 50, hjust = 1))
+
+#5)Ever hospital&Ever in ICU&Ever intubated
+data3 %>% group_by(`Ever Hospitalized`) %>% 
+  summarise(`probability for not cured after hospitalized` = mean(Outcome == "No"))
+data3 %>% group_by(`Ever in ICU`) %>% 
+  summarise(`probability for not cured after ICU` = mean(Outcome == "No"))
+data3 %>% group_by(`Ever Intubated`) %>% 
+  summarise(`probability for not cured after Intubated` = mean(Outcome == "No"))
+#limitation here
+ggplot(data = data3, aes(x=`Ever Hospitalized`)) + geom_bar() +
+  labs(title = "the distribution of patients at ever hospitalized") + 
+  theme(axis.text.x = element_text(size=10, angle = 50, hjust = 1))
+
+ggplot(data = data3, aes(x=`Ever in ICU`)) + geom_bar() +
+  labs(title = "the distribution of patients at ever in ICU") + 
+  theme(axis.text.x = element_text(size=10, angle = 50, hjust = 1))
+
+ggplot(data = data3, aes(x=`Ever Intubated`)) + geom_bar() +
+  labs(title = "the distribution of patients at ever intubated") + 
+  theme(axis.text.x = element_text(size=10, angle = 50, hjust = 1))
+```
+

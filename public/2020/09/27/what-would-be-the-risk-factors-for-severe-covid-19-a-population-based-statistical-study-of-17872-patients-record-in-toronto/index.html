@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.75.1" />
+
+
+<title>What would be the risk factors for severe COVID-19? A population-based statistical study of 17872 patients record in Toronto  - Erikaaa&#39;s website</title>
+<meta property="og:title" content="What would be the risk factors for severe COVID-19? A population-based statistical study of 17872 patients record in Toronto  - Erikaaa&#39;s website">
+
+
+  <link href='../../../../favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="../../../../css/fonts.css" media="all">
+<link rel="stylesheet" href="../../../../css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="../../../../" class="nav-logo">
+    <img src="../../../../images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="../../../../about/">About</a></li>
+    
+    <li><a href="https://github.com/rstudio/blogdown">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rstudio">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">7 min read</span>
+    
+
+    <h1 class="article-title">What would be the risk factors for severe COVID-19? A population-based statistical study of 17872 patients record in Toronto </h1>
+
+    
+    <span class="article-date">2020-09-27</span>
+    
+
+    <div class="article-content">
+      
+
+
+<div id="abstract" class="section level1">
+<h1><font color=DarkBlue>Abstract</font></h1>
+<p>Abstract: We use <span class="citation">Wickham et al. (2019)</span></p>
+</div>
+<div id="i.-introduction" class="section level1">
+<h1>I. Introduction</h1>
+<p><font size=3>        Since the end of 2019, an epidemic called COVID-19 has spread around the world. This is a new kind of virus which will cause respiratory illness in animals and peoples, and researches have shown that it can be transmitted from person-to-person through respiratory droplets <span class="citation">(“COVID-19 Overview and Infection Prevention and Control Priorities in Non-Us Healthcare Settings” 2020)</span>. The severity of COVID-19 is highly polarized. For mild patients they might have a fever, muscle aches, runny nose or even do not experience any symptoms; however, for those critical patients they might have respiratory failure, multiple organ dysfunction or even death <span class="citation">(“COVID-19 Overview and Infection Prevention and Control Priorities in Non-Us Healthcare Settings” 2020)</span>. Some studies of the similar types of respiratory diseases have shown that some characteristic groups of people will more likely to be infected or be more difficult to cure <span class="citation">(“Assessing Risk Factors for Severe Covid-19 Illness” 2020)</span>.</font><br />
+<font size=3>        Thus, the preliminary purpose of this study is to identify what would be the risk factors for severe COVID-19 based on the datasets of COVID-19 cases in Toronto <span class="citation">Toronto Public Health (2020)</span>. In this case, we could also based on the data analysis to give suggestions on prevention and treatment to those people with higher risk for severe COVID-19 to prevent them from serious illness and minimize casualties from the outbreak the COVID-19 pandemic.</font></p>
+</div>
+<div id="ii.data-analysis" class="section level1">
+<h1>II.Data Analysis</h1>
+<p><font size=3>        The dataset was derived from all COVID-19 cases reported to and managed by Toronto Public Health <span class="citation">Toronto Public Health (2020)</span>. This dataset contains 18 variables on 17872 observations/patients in Toronto. All the variables collected here are categorical variables, and they can be grouped into 6 categories: identification(e.g: Assigned ID), demographic(e.g: age group, gender), source(e.g: neighborhood name, source of infection), time(e.g: episode date), treatment(e.g: ever hospitalized) and outcome(e.g: the illness is confirmed or probable, recovered or have a fatal outcome) information.</font><br />
+<font size=3>        Here, I consider the variable “Outcome” as my response variable. If the outcome shows “fatal” or “active” rather than “resolved”, it means that the this patient is more likely to have risk for severe COVID-19.</font><br />
+<font size=3>        Before doing analysis, I firstly remove ineffective identification variables, repeated variables and data with missing values(include value with no meaning. e.g:NaN). So, there left 13 variables and 16977 observations. As I aim to identify the risk factors for severe COVID-19, I redefine the response as a binary classification: resolved or not recovered. Because, I think the risks could be shown in this way: if a large proportion of patients get sick because a characteristic and is not cured, then that characteristic is likely to be a risk factor.</font><br />
+<font size=3>        Based on this criteria and response variable I do analysis on datas below:</font></p>
+<pre><code>## ── Attaching packages ───────────────────────────────────────────────── tidyverse 1.3.0 ──
+## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+## ✓ tibble  3.0.3     ✓ dplyr   1.0.2
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.5.0
+## ── Conflicts ──────────────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<p><font size=5>-Age:</font><br />
+<font size=3>        From Pic.1 we could find that people in different age groups have different probability for not cured. So, age might be a risk factor. And especially for peoples with age elder than 70, they have higher probability of not cured than other ages which means that they tend to have higher risk for severe COVID-19. This result prove one of the guess of potential risks by CDC <span class="citation">(“Assessing Risk Factors for Severe Covid-19 Illness” 2020)</span>, but it’s a little bit higher than the conclusion in the report published by MASSACHUSETTS GENERAL HOSPITAL <span class="citation">(“Risk Factors for Covid-19 Disease Progression” 2020)</span>.</font></p>
+<p><img src="../../../../post/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><font size=5>-Gender:</font><br />
+<font size=3>        By the data for gender, it could find that female patient are more than male patient which means that females are in risk of infection of COVID19 comparing to males. However, the probability of not cured for men is slightly higher than that for women, so males are a little bit more in risk of severe COVID19 than females. So in general, when facing to the epidemic, there is no gender difference. Both male and female should pay attention to the COVID-19 prevention.</font>
+<img src="../../../../post/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)
+## # A tibble: 4 x 2
+##   `Client Gender` `Probability of not cured at different gender`
+##   &lt;chr&gt;                                                    &lt;dbl&gt;
+## 1 FEMALE                                                   0.119
+## 2 MALE                                                     0.130
+## 3 OTHER                                                    0    
+## 4 TRANSGENDER                                              0</code></pre>
+<p><font size=5>-Source:</font><br />
+<font size=3>        Based on the data for Neighbourhood Name, we could see that there are several locations with large amount of patients. And patients in these serious area have high proportion to be associated with outbreaks rather than sporadic. For example, nearly 60% infected peoples in the serious area named “Islington-City Centre West” is asssociated with outbreaks (Appendix). In addition, according to Pic.2, it is obviously to see that the majority of patients are infected by outbreak associated and close contact. So, by the suggestion from dataset, we could now that those people who closely contact with strangers would be in high risks of suffering from COVID-19. This also remind that those people who have high risk for severe COVID-19 need to stay away from large crowds and keep distance from strangers.</font></p>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<p><img src="../../../../post/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><font size=5>-:Treatment</font><br />
+<font size=3>        From tables showing the treatment result below, we can find that although ICU and intubated sounds like intensive treatment. The probability of not cured after treatment is less than the probability of not cured without treatment. This suggest that if people find out that they have COVID-19, it’s important to get treatments. Especially for these characteristic people who are in risk for severe COVID-19, data shows that going to hospital will be helpful in recovery.</p>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)
+## # A tibble: 2 x 2
+##   `Ever Hospitalized` `probability for not cured after hospitalized`
+##   &lt;chr&gt;                                                        &lt;dbl&gt;
+## 1 No                                                           0.103
+## 2 Yes                                                          0.294
+## `summarise()` ungrouping output (override with `.groups` argument)
+## # A tibble: 2 x 2
+##   `Ever in ICU` `probability for not cured after ICU`
+##   &lt;chr&gt;                                         &lt;dbl&gt;
+## 1 No                                            0.117
+## 2 Yes                                           0.423
+## `summarise()` ungrouping output (override with `.groups` argument)
+## # A tibble: 2 x 2
+##   `Ever Intubated` `probability for not cured after Intubated`
+##   &lt;chr&gt;                                                  &lt;dbl&gt;
+## 1 No                                                     0.119
+## 2 Yes                                                    0.469</code></pre>
+</div>
+<div id="short-conclusion" class="section level1">
+<h1>Short Conclusion</h1>
+<p><font size=3>        By analysis, we could conclude that age is a risk factor and for people elder than 70 years old, they will be in the high risk for severe COVID-19. Gender could be a feature but not abe a distinct risk factor, females are more likely to have COVID-19, but they also have higher probability of cured than males. Source is another risk factor, it notice us that gathering crowds of people together and closely contact to each other may increase the risk of infection a lot. People in high risk for severe COVID-19 should prevent this. And treatment could make people have higher probability to be cured, so if people with higher risk for severe COVID-19 when they find out themselves have COVID-19, they need to go to hospital that treatments are helpful.
+Besides, I also observed several limitations. First of all, the dataset has too few kinds of variables to support the research on risk factors. Like what have been mentioned in the report from CDC, race, certain medications usage, Poverty and crowding might also be potential risk factors. However, these features do not be recorded in the dataset. Besides, the amount of some kinds of variables is not plenty enough. For example,there is a huge difference between the number of people who are hospitalized and those who are not hospitalized (Refer to Appendix:code). This may affect the result of our study.</font><br />
+<font size=3>        In the next step, I will try to get more datas for analysis, and try to use these variables to construct a model for identifying patients who is in danger of sever COVID-19.</font></p>
+<p><img src="../../../../post/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="../../../../post/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-7-2.png" width="672" /><img src="../../../../post/2015-07-23-r-rmarkdown_files/figure-html/unnamed-chunk-7-3.png" width="672" /></p>
+</div>
+<div id="appendix" class="section level1">
+<h1>Appendix</h1>
+<p><font size=3>        Code and data supporting this analysis is available at: AAA </font></p>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references">
+<div id="ref-covid19intro2">
+<p>“Assessing Risk Factors for Severe Covid-19 Illness.” 2020. <a href="https://www.cdc.gov/coronavirus/2019-ncov/covid-data/investigations-discovery/assessing-risk-factors.html">https://www.cdc.gov/coronavirus/2019-ncov/covid-data/investigations-discovery/assessing-risk-factors.html</a>.</p>
+</div>
+<div id="ref-covid19intro1">
+<p>“COVID-19 Overview and Infection Prevention and Control Priorities in Non-Us Healthcare Settings.” 2020. <a href="https://www.cdc.gov/coronavirus/2019-ncov/hcp/non-us-settings/overview/index.html#">https://www.cdc.gov/coronavirus/2019-ncov/hcp/non-us-settings/overview/index.html#</a>.</p>
+</div>
+<div id="ref-HOSPITAL">
+<p>“Risk Factors for Covid-19 Disease Progression.” 2020. MASSACHUSETTS GENERAL HOSPITAL; <a href="https://www.massgeneral.org/assets/MGH/pdf/news/coronavirus/risk-factors-for-severe-COVID-19.pdf">https://www.massgeneral.org/assets/MGH/pdf/news/coronavirus/risk-factors-for-severe-COVID-19.pdf</a>.</p>
+</div>
+<div id="ref-data">
+<p>Toronto Public Health. 2020. “COVID-19 Cases in Toronto.” <a href="https://open.toronto.ca/dataset/covid-19-cases-in-toronto/">https://open.toronto.ca/dataset/covid-19-cases-in-toronto/</a>.</p>
+</div>
+<div id="ref-citetidyverse">
+<p>Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019. “Welcome to the tidyverse.” <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.</p>
+</div>
+</div>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="../../../../index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="../../../../images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+
