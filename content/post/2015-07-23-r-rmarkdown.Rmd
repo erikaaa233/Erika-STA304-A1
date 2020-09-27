@@ -11,8 +11,10 @@ tags: ["R Markdown", "plot", "regression"]
 knitr::opts_chunk$set(collapse = TRUE)
 ```
 # <font color=DarkBlue>Abstract</font>
-<font size=4>Objective: Based on statistical analysis, examine what features would make people in risk for severe COVID-19, and what could we do to prevent this epidemic in some degree.</font>  
-<font size=4>Results: Age and source are two risk factors, while gender is not. To prevent illness, people should be away from crowded people and treatments in the hospital could make people have higher probability to be cured.</font>    
+<font size=4>Objective:</font>  
+<font size=4>Based on statistical analysis, examine what features would make people in risk for severe COVID-19, and what could we do to prevent this epidemic in some degree.</font>  
+<font size=4>Results:</font>   
+<font size=3>Age and source are two risk factors, while gender is not. To prevent illness, people should be away from crowded people and treatments in the hospital could make people have higher probability to be cured.</font>    
      
      
 # I. Introduction
@@ -94,7 +96,7 @@ data3 %>% group_by(`Client Gender`) %>% summarise(`Probability of not cured at d
               
        
 <font size=5>-Source:</font>  
-<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Based on the data for Neighbourhood Name, we could see that there are several locations with large amount of patients. And patients in these serious area have high proportion to be associated with outbreaks rather than sporadic. For example, nearly 60% infected peoples in the serious area named "Islington-City Centre West" is asssociated with outbreaks (Appendix). In addition, according to Pic.2, it is obviously to see that the majority of patients are infected by outbreak associated and close contact. So, by the suggestion from dataset, we could now that those people who closely contact with strangers would be in high risks of suffering from COVID-19. This also remind that those people who have high risk for severe COVID-19 need to stay away from large crowds and keep distance from strangers.</font>
+<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Based on the data for Neighbourhood Name, we could see that there are several locations with large amount of patients. And patients in these serious area have high proportion to be associated with outbreaks rather than sporadic. For example, nearly 60% infected peoples in the serious area named "Islington-City Centre West" is asssociated with outbreaks (Refer to Appendix). In addition, according to Pic.2, it is obviously to see that the majority of patients are infected by outbreak associated and close contact. So, by the suggestion from dataset, we could now that those people who closely contact with strangers would be in high risks of suffering from COVID-19. This also remind that those people who have high risk for severe COVID-19 need to stay away from large crowds and keep distance from strangers.</font>
 ```{r echo=FALSE, results='hide' }
 #3) Neighbourhood & type of infection source
 table(data3$`Neighbourhood Name`)
