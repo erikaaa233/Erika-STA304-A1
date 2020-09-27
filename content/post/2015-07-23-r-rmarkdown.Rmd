@@ -1,7 +1,7 @@
 ---
-title: "STA304 A1"
-author: "Jiayi YANG"
-date: 2020-09-24T21:13:14-05:00
+title: "What would be the risk factors for severe COVID-19? A population-based statistical study of 17872 patients record in Toronto "
+author: "Jiayi YANG (1004244212)"
+date: 2020-09-27T21:13:14-05:00
 bibliography: "references.bib"
 categories: ["R"]
 tags: ["R Markdown", "plot", "regression"]
@@ -10,36 +10,147 @@ tags: ["R Markdown", "plot", "regression"]
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse = TRUE)
 ```
-# Abstract
+# <font color=DarkBlue>Abstract</font>
 Abstract: We use @citetidyverse
 
-# Introduction
-Intro:aaa
+# I. Introduction
+<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Since the end of 2019, an epidemic called COVID-19 has spread around the world. This is a new kind of virus which will cause respiratory illness in animals and peoples, and researches have shown that it can be transmitted from person-to-person through respiratory droplets @covid19intro1. The severity of COVID-19 is highly polarized. For mild patients they might have a fever, muscle aches, runny nose or even do not experience any symptoms; however, for those critical patients they might have respiratory failure, multiple organ dysfunction or even death @covid19intro1. Some studies of the similar types of respiratory diseases have shown that some characteristic groups of people will more likely to be infected or be more difficult to cure @covid19intro2.</font>   
+<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thus, the preliminary purpose of this study is to identify what would be the risk factors for severe COVID-19 based on the datasets of COVID-19 cases in Toronto @data. In this case, we could also based on the data analysis to give suggestions on prevention and treatment to those people with higher risk for severe COVID-19 to prevent them from serious illness and minimize casualties from the outbreak the COVID-19 pandemic.</font>  
 
-# Data Introduction
-Introduce the scenario and project objective.
-types of variables
+# II.Data Analysis
+<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The dataset was derived from all COVID-19 cases reported to and managed by Toronto Public Health @data. This dataset contains 18 variables on 17872 observations/patients in Toronto. All the variables collected here are categorical variables, and they can be grouped into 6 categories: identification(e.g: Assigned ID), demographic(e.g: age group, gender), source(e.g: neighborhood name, source of infection), time(e.g: episode date), treatment(e.g: ever hospitalized) and outcome(e.g: the illness is confirmed or probable, recovered or have a fatal outcome) information.</font>  
+<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Here, I consider the variable "Outcome" as my response variable. If the outcome shows "fatal" or "active" rather than "resolved", it means that the this patient is more likely to have risk for severe COVID-19.</font>    
+<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Before doing analysis, I firstly remove ineffective identification variables, repeated variables and data with missing values(include value with no meaning. e.g:NaN). So, there left 13 variables and 16977 observations. As I aim to identify the risk factors for severe COVID-19, I redefine the response as a binary classification: resolved or not recovered. Because, I think the risks could be shown in this way: if a large proportion of patients get sick because a characteristic and is not cured, then that characteristic is likely to be a risk factor.</font>  
+<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Based on this criteria and response variable I do analysis on datas below:</font> 
+```{r echo=FALSE, results='hide'}
+library(opendatatoronto)
+library(tidyverse)
+library(dplyr)
 
+# get package
+package <- show_package("64b54586-6180-4485-83eb-81e8fae3b8fe")
+package
 
-```{r cars}
-summary(cars)
-fit <- lm(dist ~ speed, data = cars)
-fit
+# get all resources for this package
+resources <- list_package_resources("64b54586-6180-4485-83eb-81e8fae3b8fe")
+
+# identify datastore resources; by default, Toronto Open Data sets datastore resource format to CSV for non-geospatial and GeoJSON for geospatial resources
+datastore_resources <- filter(resources, tolower(format) %in% c('csv', 'geojson'))
+
+# load the first datastore resource as a sample
+data <- filter(datastore_resources, row_number()==1) %>% get_resource()
+data
+
+#check missing values#
+colSums(is.na(data))
+#Remove some variables#
+data1 <- data %>% select(3:12,16:18)
+
+#check data types
+str(data1)
+
+#divide three types of outcomes into two#
+#create new variables#
+data2 = data1
+data2$Outcome = as.factor(ifelse(data2$Outcome == "RESOLVED", "Resolved", "No"))
+```
+       
+       
+       
+<font size=5>-Age:</font>  
+<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;From Pic.1 we could find that people in different age groups have different probability for not cured. So, age might be a risk factor. And especially for peoples with age elder than 70, they have higher probability of not cured than other ages which means that they tend to have higher risk for severe COVID-19. This result prove one of the guess of potential risks by CDC @covid19intro2, but it's a little bit higher than the conclusion in the report published by MASSACHUSETTS GENERAL HOSPITAL @HOSPITAL.</font>  
+     
+```{r echo=FALSE}
+#Data processing
+#1)Age
+#Remove the observation with invalid data
+data2 <- data2 %>% filter(`Age Group` != "NaN") %>% 
+  filter(`Source of Infection` !="Unknown/Missing") %>%
+  filter(`Client Gender` != "UNKNOWN")
+#Test whether there are differences in the probability of resolved at different ages#
+data3 <- data2%>% group_by(`Age Group`) %>% 
+  mutate(`probability for not cured in different age` = mean(Outcome == "No"))
+#graph
+ggplot(data3, aes(x = `Age Group`, y = `probability for not cured in different age`)) + 
+  geom_point() + labs(title = "Pic.1: Probability of not cured at different ages") + 
+  theme(axis.text.x = element_text(angle = 50, hjust = 1))
+```
+ 
+
+                  
+<font size=5>-Gender:</font>  
+<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;By the data for gender, it could find that female patient are more than male patient which means that females are in risk of infection of COVID19 comparing to males. However, the probability of not cured for men is slightly higher than that for women, so males are a little bit more in risk of severe COVID19 than females. So in general, when facing to the epidemic, there is no gender difference. Both male and female should pay attention to the COVID-19 prevention.</font>
+```{r echo=FALSE}
+#2)Gender
+#Test whether there are differences in the probability of resolved at different gender#
+ggplot(data = data3, aes(x=`Client Gender`)) + geom_bar() +
+  labs(title = "the distribution of patients at different gender") + 
+  theme(axis.text.x = element_text(size=10, angle = 50, hjust = 1))
+data3 %>% group_by(`Client Gender`) %>% summarise(`Probability of not cured at different gender` = mean(Outcome == "No"))
 ```
 
-# Including Plots
-
-You can also embed plots. See Figure \@ref(fig:pie) for example:
-
-```{r pie, fig.cap='A fancy pie chart.', tidy=FALSE}
-par(mar = c(0, 1, 0, 1))
-pie(
-  c(280, 60, 20),
-  c('Sky', 'Sunny side of pyramid', 'Shady side of pyramid'),
-  col = c('#0292D8', '#F7EA39', '#C4B632'),
-  init.angle = -50, border = NA
-)
+              
+       
+<font size=5>-Source:</font>  
+<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Based on the data for Neighbourhood Name, we could see that there are several locations with large amount of patients. And patients in these serious area have high proportion to be associated with outbreaks rather than sporadic. For example, nearly 60% infected peoples in the serious area named "Islington-City Centre West" is asssociated with outbreaks (Appendix). In addition, according to Pic.2, it is obviously to see that the majority of patients are infected by outbreak associated and close contact. So, by the suggestion from dataset, we could now that those people who closely contact with strangers would be in high risks of suffering from COVID-19. This also remind that those people who have high risk for severe COVID-19 need to stay away from large crowds and keep distance from strangers.</font>
+```{r echo=FALSE, results='hide' }
+#3) Neighbourhood & type of infection source
+table(data3$`Neighbourhood Name`)
+data3 %>% group_by(`Neighbourhood Name`) %>% 
+  summarise(prob = mean(`Outbreak Associated` == "Outbreak Associated"))
 ```
+
+```{r echo=FALSE}
+#4)Source of Infection
+ggplot(data = data3, aes(x=`Source of Infection`)) + geom_bar() +
+  labs(title = "Pic.2: The distribution of patients from difference source of infection") + 
+  theme(axis.text.x = element_text(size=10, angle = 50, hjust = 1))
+```
+       
+       
+       
+<font size=5>-:Treatment</font>  
+<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;From tables showing the treatment result below, we can find that although ICU and intubated sounds like intensive treatment. The probability of not cured after treatment is less than the probability of not cured without treatment. This suggest that if people find out that they have COVID-19, it's important to get treatments. Especially for these characteristic people who are in risk for severe COVID-19, data shows that going to hospital will be helpful in recovery.
+```{r echo=FALSE}
+#5)Ever hospital&Ever in ICU&Ever intubated
+data3 %>% group_by(`Ever Hospitalized`) %>% 
+  summarise(`probability for not cured after hospitalized` = mean(Outcome == "No"))
+data3 %>% group_by(`Ever in ICU`) %>% 
+  summarise(`probability for not cured after ICU` = mean(Outcome == "No"))
+data3 %>% group_by(`Ever Intubated`) %>% 
+  summarise(`probability for not cured after Intubated` = mean(Outcome == "No"))
+
+```
+    
+    
+    
+# Short Conclusion
+<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;By analysis, we could conclude that age is a risk factor and for people elder than 70 years old, they will be in the high risk for severe COVID-19. Gender could be a feature but not abe a distinct risk factor, females are more likely to have COVID-19, but they also have higher probability of cured than males. Source is another risk factor, it notice us that gathering crowds of people together and closely contact to each other may increase the risk of infection a lot. People in high risk for severe COVID-19 should prevent this. And treatment could make people have higher probability to be cured, so if people with higher risk for severe COVID-19 when they find out themselves have COVID-19, they need to go to hospital that treatments are helpful.
+Besides, I also observed several limitations. First of all, the dataset has too few kinds of variables to support the research on risk factors. Like what have been mentioned in the report from CDC, race, certain medications usage, Poverty and crowding might also be potential risk factors. However, these features do not be recorded in the dataset. Besides, the amount of some kinds of variables is not plenty enough. For example,there is a huge difference between the number of people who are hospitalized and those who are not hospitalized (Refer to Appendix:code). This may affect the result of our study.</font>  
+<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the next step, I will try to get more datas for analysis, and try to use these variables to construct a model for identifying patients who is in danger of sever COVID-19.</font>
+
+```{r echo=FALSE, results='hide'}
+#limitation here
+ggplot(data = data3, aes(x=`Ever Hospitalized`)) + geom_bar() +
+  labs(title = "the distribution of patients at ever hospitalized") + 
+  theme(axis.text.x = element_text(size=10, angle = 50, hjust = 1))
+
+ggplot(data = data3, aes(x=`Ever in ICU`)) + geom_bar() +
+  labs(title = "the distribution of patients at ever in ICU") + 
+  theme(axis.text.x = element_text(size=10, angle = 50, hjust = 1))
+
+ggplot(data = data3, aes(x=`Ever Intubated`)) + geom_bar() +
+  labs(title = "the distribution of patients at ever intubated") + 
+  theme(axis.text.x = element_text(size=10, angle = 50, hjust = 1))
+```
+
+
+     
+     
+     
+# Appendix
+
+<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Code and data supporting this analysis is available at: AAA </font>
+
 
 # References
-aaa
