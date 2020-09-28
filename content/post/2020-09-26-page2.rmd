@@ -57,7 +57,7 @@ ggplot(data3, aes(x = `Age Group`, y = `probability for not cured in different a
 #2)Gender
 #Test whether there are differences in the probability of resolved at different gender#
 ggplot(data = data3, aes(x=`Client Gender`)) + geom_bar() +
-  labs(title = "the distribution of patients at different gender") + 
+  labs(title = "Pic.2: the distribution of patients at different gender") + 
   theme(axis.text.x = element_text(size=10, angle = 50, hjust = 1))
 data3 %>% group_by(`Client Gender`) %>% summarise(`Probability of not cured at different gender` = mean(Outcome == "No"))
 
@@ -68,7 +68,7 @@ data3 %>% group_by(`Neighbourhood Name`) %>%
 
 #4)Source of Infection
 ggplot(data = data3, aes(x=`Source of Infection`)) + geom_bar() +
-  labs(title = "Pic.2: The distribution of patients from difference source of infection") + 
+  labs(title = "Pic.3: The distribution of patients from difference source of infection") + 
   theme(axis.text.x = element_text(size=10, angle = 50, hjust = 1))
 
 #5)Ever hospital&Ever in ICU&Ever intubated
@@ -80,15 +80,15 @@ data3 %>% group_by(`Ever Intubated`) %>%
   summarise(`probability for not cured after Intubated` = mean(Outcome == "No"))
 #limitation here
 ggplot(data = data3, aes(x=`Ever Hospitalized`)) + geom_bar() +
-  labs(title = "the distribution of patients at ever hospitalized") + 
+  labs(title = "Pic.4: the distribution of patients at ever hospitalized") + 
   theme(axis.text.x = element_text(size=10, angle = 50, hjust = 1))
 
 ggplot(data = data3, aes(x=`Ever in ICU`)) + geom_bar() +
-  labs(title = "the distribution of patients at ever in ICU") + 
+  labs(title = "Pic.5:the distribution of patients at ever in ICU") + 
   theme(axis.text.x = element_text(size=10, angle = 50, hjust = 1))
 
 ggplot(data = data3, aes(x=`Ever Intubated`)) + geom_bar() +
-  labs(title = "the distribution of patients at ever intubated") + 
+  labs(title = "Pic.6: the distribution of patients at ever intubated") + 
   theme(axis.text.x = element_text(size=10, angle = 50, hjust = 1))
 ```
 

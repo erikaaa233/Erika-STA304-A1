@@ -133,7 +133,7 @@ data3 %>% group_by(`Ever Intubated`) %>%
 Besides, I also observed several limitations. First of all, the dataset has too few kinds of variables to support the research on risk factors. Like what have been mentioned in the report from CDC, race, certain medications usage, Poverty and crowding might also be potential risk factors. However, these features do not be recorded in the dataset. Besides, the amount of some kinds of variables is not plenty enough. For example,there is a huge difference between the number of people who are hospitalized and those who are not hospitalized (Refer to Appendix:code-Pic.4). This may affect the result of our study.</font>  
 <font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the next step, I will try to get more datas for analysis, and try to use these variables to construct a model for identifying patients who is in danger of sever COVID-19.</font>
 
-```{r echo=FALSE, results='hide'}
+```{r include=FALSE}
 #limitation here
 ggplot(data = data3, aes(x=`Ever Hospitalized`)) + geom_bar() +
   labs(title = "Pic.4: the distribution of patients at ever hospitalized") + 
