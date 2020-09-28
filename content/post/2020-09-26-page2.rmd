@@ -3,8 +3,8 @@ title: "Apendix:code "
 author: Jiayi YANG
 date: '2020-09-27'
 slug: page2
-categories: []
-tags: []
+categories: ["R"]
+tags: ["R Markdown", "plot", "regression"]
 ---
 
 
