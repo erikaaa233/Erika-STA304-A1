@@ -113,7 +113,7 @@ ggplot(data = data3, aes(x=`Source of Infection`)) + geom_bar() +
        
        
        
-<font size=5>-:Treatment</font>  
+<font size=5>-Treatment:</font>  
 <font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;From tables showing the treatment result below, we can find that although ICU and intubated sounds like intensive treatment. The probability of not cured after treatment is less than the probability of not cured without treatment. This suggest that if people find out that they have COVID-19, it's important to get treatments. Especially for these characteristic people who are in risk for severe COVID-19, data shows that going to hospital will be helpful in recovery.
 ```{r echo=FALSE}
 #5)Ever hospital&Ever in ICU&Ever intubated
@@ -154,7 +154,7 @@ ggplot(data = data3, aes(x=`Ever Intubated`)) + geom_bar() +
      
 # Appendix
 
-<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Code and data supporting this analysis is available at:https://github.com/erikaaa233/Erika-STA304-A1 </font>
+<font size=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Code and data supporting this analysis is available at:Appendix:code or https://github.com/erikaaa233/Erika-STA304-A1 </font>
 
 
 # References
